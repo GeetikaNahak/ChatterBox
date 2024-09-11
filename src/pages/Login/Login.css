@@ -1,10 +1,11 @@
 .login{
     min-height: 100vh;
-    background: linear-gradient(rgba(0, 26, 194, 0.8),rgba(0, 71, 194, 0.7)),url(/background.jpeg) no-repeat;
+    background: linear-gradient(#001f99e2,rgba(0, 71, 194, 0.7)),url(/background.jpeg) no-repeat;
     background-size: cover;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    
     
 }
 
