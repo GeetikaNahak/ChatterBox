@@ -1,7 +1,9 @@
 .chat-box{
     height: 75vh;
     position: relative;
-    background-color: #f1f5ff;
+    background:linear-gradient(#ccccdd96,rgba(190, 194, 211, 0.419)),url('/src/assets/backchat.jpg')  no-repeat;
+    background-size: cover;
+    
 }
 .chat-user{
     padding: 10px 15px;

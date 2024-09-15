@@ -8,16 +8,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './config/firebase'
 import { AppContext } from './context/AppContext'
+import { useContext } from 'react'
 
 
 const App = () => {
   const navigate = useNavigate()
-
+  const {loadUserData} = useContext(AppContext);
   useEffect(() => {
     onAuthStateChanged(auth,async(user)=>{
       if(user){
         navigate('/chat')
-        console.log(user)
+       
+        await loadUserData(user.uid);
    
       }
       else{
@@ -33,7 +35,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Login/>}/>
         <Route path='/chat' element={<Chat/>}/>
-        <Route path='/profileUpdate' element={<ProfileUpdate/>}/>
+        <Route path='/profile' element={<ProfileUpdate/>}/>
       </Routes>
       
     </>

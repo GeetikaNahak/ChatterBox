@@ -33,7 +33,7 @@ const Login = () => {
         {currState==="Sign up"?<input onChange={(e)=>setUserName(e.target.value)} value={userName} type="text" placeholder="UserName" required className="form-input" />:null}
         
         <input type="text" onChange={(e)=>setEmail(e.target.value)} value={email} placeholder="Email" required className="form-input" />
-        <input type="text" onChange={(e)=>setPassword(e.target.value)} value={password} placeholder="Password" required className="form-input" />
+        <input type="password" onChange={(e)=>setPassword(e.target.value)} value={password} placeholder="Password" required className="form-input" />
         <button>{currState==="Sign up"?"Create Account":"Login"}</button>
         <div className="login-term">
           <input type="checkbox" />

@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { getFirestore, setDoc } from "firebase/firestore";
+import { getFirestore, collection, getDoc, setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
 // import { signOut } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -23,7 +23,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db=getFirestore(app);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
 
 const signup = async (username, email, password)=>{
     try {
