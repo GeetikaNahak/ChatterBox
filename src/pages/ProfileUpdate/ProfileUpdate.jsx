@@ -1,16 +1,82 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './ProfileUpdate.css'
 import assets from '../../assets/assets'
 import firebase from 'firebase/compat/app';
+import { toast, useToast } from 'react-toastify';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
+import { auth, db } from '../../config/firebase';
+import upload from '../../lib/upload';
 const ProfileUpdate = () => {
+  const navigate=useNavigate();
+
 
   // const [image,setImage] = useState(false);
   const [first, setfirst] = useState(null);
+  const [name,setName] = useState("");
+  const [bio,setBio]= useState("");
+  const [uid,setUid]=useState("");
+  const [img,setImg]=useState(null);
 
+  const profileUpdate=async (e)=>{
+    e.preventDefault();
+    try {
+      if(!img && !first){
+        toast.error("Upload Profile Picture");
+      }
+      const docRef=doc(db,'users',uid);
+      if(first){
+        const imgUrl= await upload(first);
+        setImg(imgUrl);
+        await updateDoc(docRef,{
+          avatar:imgUrl,
+          name:name,
+          bio:bio
+        })
+        alert("success");
+        navigate("/chat");
+      }
+      else{
+        await updateDoc(docRef,{
+          avatar:img,
+          name:name,
+          bio:bio
+        })
+        alert("success");
+        navigate("/chat");
+      }
+    } catch (error) {
+      
+    }
+    
+  }
+  
+  useEffect(()=>{
+    onAuthStateChanged(auth, async (user)=>{
+      if(user){
+        setUid(user.uid);
+        const docRef = doc(db,"users",user.uid);
+        const docSnap = getDoc(docRef);
+        if((await docSnap).data().name){
+          setName((await docSnap).data().name);
+        }
+        if((await docSnap).data().bio){
+          setBio((await docSnap).data().bio);
+        }
+        if((await docSnap).data().avatar){
+          setImg((await docSnap).data().avatar);
+        }
+      }
+      else{
+        navigate('/')
+      }
+    })
+  },[])
   return (
     <div className='profile'>
       <div className="profile-container">
-        <form action="">
+        <form onSubmit={profileUpdate}>
           <h3>Profile Details</h3>
           <label htmlFor="avatar">
             <input type="file" onChange={(e)=>{
@@ -19,14 +85,16 @@ const ProfileUpdate = () => {
                 setfirst(file);
               }
             }}  id="avatar"  accept='.png, .jpg, .jpeg' hidden />
-            <img src={first? URL.createObjectURL(first):assets.avatar_icon} alt="" />
-            uppload profile image
+            <img src={first? URL.createObjectURL(first):(img||assets.avatar_icon)} alt="" />
+            upload profile image
           </label>
-          <input type="text" placeholder='Your name' required/>
-          <textarea name="" id="" placeholder='Write profile bio'></textarea>
+          <input onChange={(e)=>{
+            setName(e.target.value);
+          }} value={name} type="text" placeholder='Your name' required/>
+          <textarea onChange={(e)=>{setBio(e.target.bio)}} value={bio} placeholder='Write profile bio'></textarea>
           <button type="submit">Save</button>
         </form>
-        <img src={first? URL.createObjectURL(first):assets.logo_big3} className="profile-pic" alt="" />
+        <img src={first? URL.createObjectURL(first):(img||assets.logo_big3)} className="profile-pic" alt="" />
       </div>
     </div>
   )
