@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './ProfileUpdate.css'
 import assets from '../../assets/assets'
 import firebase from 'firebase/compat/app';
@@ -8,6 +8,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../../config/firebase';
 import upload from '../../lib/upload';
+import { AppContext } from '../../context/AppContext';
 const ProfileUpdate = () => {
   const navigate=useNavigate();
 
@@ -18,7 +19,8 @@ const ProfileUpdate = () => {
   const [bio,setBio]= useState("");
   const [uid,setUid]=useState("");
   const [img,setImg]=useState(null);
-
+  // const [data,setUserData]=useContext(AppContext);d
+  const setUserData=useContext(AppContext);
   const profileUpdate=async (e)=>{
     e.preventDefault();
     try {
@@ -43,11 +45,15 @@ const ProfileUpdate = () => {
           name:name,
           bio:bio
         })
+        // console.log(docRef.data)
         alert("success");
+        const snap=await getDoc(docRef);
+        setUserData(snap.data())
         navigate("/chat");
       }
     } catch (error) {
-      
+      console.error(error);
+      toast.error(error.message)
     }
     
   }
@@ -91,8 +97,8 @@ const ProfileUpdate = () => {
           <input onChange={(e)=>{
             setName(e.target.value);
           }} value={name} type="text" placeholder='Your name' required/>
-          <textarea onChange={(e)=>{setBio(e.target.bio)}} value={bio} placeholder='Write profile bio'></textarea>
-          <button type="submit">Save</button>
+          <textarea onChange={(e)=>{setBio(e.target.value)}} value={bio} placeholder='Write profile bio'></textarea>
+          <button className='button' type="submit" >Save</button>
         </form>
         <img src={first? URL.createObjectURL(first):(img||assets.logo_big3)} className="profile-pic" alt="" />
       </div>
