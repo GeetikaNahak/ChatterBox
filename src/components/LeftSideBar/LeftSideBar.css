@@ -84,6 +84,12 @@
     position: relative;
     padding: 10px 0px;
 }
+
+
+.ls-nav .menu:active{
+    background-color: #077fffad;
+    transform:scale(0.95);
+}
 .menu .sub-menu{
     position: absolute;
     top: 100%;
@@ -93,7 +99,7 @@
     border-radius: 5px;
     background-color: white;
     color: black;
-    display: none;
+    display: block;
 }
 .sub-menu hr{
     border: none;
@@ -106,6 +112,6 @@
     cursor: pointer;
     font-size: 14px;
 }
-.menu:hover .sub-menu{
+/* .menu:hover .sub-menu{
     display: block;
-}
+} */

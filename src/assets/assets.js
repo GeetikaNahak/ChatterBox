@@ -19,6 +19,7 @@ import logo_big2 from './logo_big2.png'
 import logo1 from './logo1.png'
 import image_regular from './image_regular.png'
 import logo_big3 from './logo_big3.png'
+import goback from './goback.svg'
 const assets = {
     avatar_icon,
     gallery_icon,
@@ -40,7 +41,8 @@ const assets = {
     logo_big2,
     logo1,
     image_regular,
-    logo_big3
+    logo_big3,
+    goback
 }
 
 export default assets;

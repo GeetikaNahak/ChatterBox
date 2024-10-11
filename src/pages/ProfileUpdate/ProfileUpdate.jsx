@@ -10,6 +10,10 @@ import { auth, db } from '../../config/firebase';
 import upload from '../../lib/upload';
 import { AppContext } from '../../context/AppContext';
 const ProfileUpdate = () => {
+
+  const goback=()=>{
+    navigate('/chat');
+  }
   const navigate=useNavigate();
 
 
@@ -36,7 +40,7 @@ const ProfileUpdate = () => {
           name:name,
           bio:bio
         })
-        alert("success");
+        // alert("success");
         navigate("/chat");
       }
       else{
@@ -46,14 +50,14 @@ const ProfileUpdate = () => {
           bio:bio
         })
         // console.log(docRef.data)
-        alert("success");
+        // alert("success");
         const snap=await getDoc(docRef);
         setUserData(snap.data())
         navigate("/chat");
       }
     } catch (error) {
       console.error(error);
-      toast.error(error.message)
+      toast.error("Already Saved")
     }
     
   }
@@ -83,6 +87,7 @@ const ProfileUpdate = () => {
     <div className='profile'>
       <div className="profile-container">
         <form onSubmit={profileUpdate}>
+          <img src={assets.goback} alt="" className="goback" onClick={goback}/>
           <h3>Profile Details</h3>
           <label htmlFor="avatar">
             <input type="file" onChange={(e)=>{

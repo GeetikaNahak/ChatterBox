@@ -10,14 +10,14 @@ import { toast } from "react-toastify";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBxom0nyhe3wtDs4rMM3EovjiZx3X3NXL4",
-  authDomain: "chatterbox-bea67.firebaseapp.com",
-  projectId: "chatterbox-bea67",
-  storageBucket: "chatterbox-bea67.appspot.com",
-  messagingSenderId: "713917292767",
-  appId: "1:713917292767:web:2ff660cb00255be5b6096a",
-  measurementId: "G-Z9LYVFTKLL"
+    apiKey: "AIzaSyBWY7cACGIBxMgvFDYFoDywQ8buALaTbPY",
+    authDomain: "chatterbox-6430e.firebaseapp.com",
+    projectId: "chatterbox-6430e",
+    storageBucket: "chatterbox-6430e.appspot.com",
+    messagingSenderId: "440580199044",
+    appId: "1:440580199044:web:72995309bc0381bc5028d1"
 };
 
 // Initialize Firebase
@@ -40,7 +40,7 @@ const signup = async (username, email, password)=>{
             lastSeen:Date.now()
         })
         await setDoc(doc(db,"chats",user.uid),{
-            chatData:[]
+            chatsData:[]
         })
        
     } catch (error) {
