@@ -4,6 +4,7 @@ import assets from '../../assets/assets'
 import { AppContext } from '../../context/AppContext'
 import { arrayUnion, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../../config/firebase'
+import upload from '../../lib/upload'
 const ChatBox = () => {
 
   const {userData,chatData,messagesId,chatUser,messages,setMessages}=useContext(AppContext);
@@ -42,6 +43,42 @@ const ChatBox = () => {
     console.log(messages);
     setInput("");
   }
+
+  const sendImage=async (e)=>{
+    try {
+      const fileUrl=await upload(e.target.files[0]);
+      if(fileUrl && messagesId){
+        await updateDoc(doc(db,'messages',messagesId),{
+          messages:arrayUnion({
+            sId:userData.id,
+            image:fileUrl,
+            createdAt:new Date()
+          })
+        })
+        const userIDs=[chatUser.rId,userData.id];
+        userIDs.forEach(async(id)=>{
+          const userChatRef=doc(db,'chats',id);
+          const userChatSnapshot=await getDoc(userChatRef);
+          if(userChatSnapshot.exists()){
+            const userChatData=userChatSnapshot.data();
+            const chatIndex=userChatData.chatsData.findIndex((c)=>c.messageId===messagesId);
+            userChatData.chatsData[chatIndex].lastMessage="image";
+            userChatData.chatsData[chatIndex].updatedAt=Date.now();
+            if(userChatData.chatsData[chatIndex].rId===userData.id){
+              userChatData.chatsData[chatIndex].messageSeen=false;
+            }
+            await updateDoc(userChatRef,{
+              chatsData:userChatData.chatsData
+            })
+          }
+        })
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
+
   useEffect(()=>{
     if(messagesId){
       const unsub= onSnapshot(doc(db,'messages',messagesId),(res)=>{
@@ -63,15 +100,15 @@ const ChatBox = () => {
         <img src={assets.help_icon} alt="" />
       </div>
       <div className="chat-msg">
-        {Array(5).fill().map((msg,index)=>{
-          <div className={true?"s-msg":"r-msg"}>
-          <p className='msg'>{"hello"}</p>
+        {messages.map((msg,index)=>{
+          return (<div key={index} className={msg.sId===userData.id?"s-msg":"r-msg"}>
+          <p className='msg'>{msg.text}</p>
           <div>
-            <img src={assets.add_icon} alt="" />
-            <p>2:30 PM</p>
+            <img src={msg.sId===userData.id?userData.avatar:chatUser.userData.avatar} alt="" />
+            <p>{new Date(msg.createdAt.seconds*1000).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</p>
           </div>
         
-        </div>
+        </div>);
         })}
         
         
@@ -80,7 +117,7 @@ const ChatBox = () => {
 
       <div className="chat-input">
         <input onChange={(e)=>setInput(e.target.value)} value={input} type="text" placeholder='send a message' />
-        <input type="file" id="image" accept='image/png, image/jpeg' hidden/>
+        <input onChange={sendImage} type="file" id="image" accept='image/png, image/jpeg' hidden/>
         <label htmlFor="image">
           <img src={assets.image_regular} alt="" />
         </label>

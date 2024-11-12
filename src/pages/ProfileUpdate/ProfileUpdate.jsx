@@ -28,9 +28,11 @@ const ProfileUpdate = () => {
   const profileUpdate=async (e)=>{
     e.preventDefault();
     try {
-      if(!img && !first){
-        toast.error("Upload Profile Picture");
-      }
+      if (!img && !first) {
+        toast.error("Please upload a profile picture.");
+        return;
+     }
+     
       const docRef=doc(db,'users',uid);
       if(first){
         const imgUrl= await upload(first);

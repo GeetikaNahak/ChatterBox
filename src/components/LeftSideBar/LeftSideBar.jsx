@@ -84,6 +84,14 @@ const LeftSideBar = () => {
   };
 
   const addChat = async () => {
+    const existingChat = chatData.find((chat) => chat.rId === user.id);
+
+    if (existingChat) {
+      toast.info("Chat with this user already exists.");
+      return; // Exit if chat with user already exists
+    }
+
+
     const messagesRef = collection(db, "messages");
     const chatsRef = collection(db, "chats");
     try {
@@ -116,7 +124,7 @@ const LeftSideBar = () => {
       });
       // console.log(chatData)
       // console.log(userData);
-      // console.log(chatData)
+      console.log(chatData)
     } catch (error) {}
   };
 
@@ -155,8 +163,8 @@ const LeftSideBar = () => {
           <input
             onChange={inputHandler}
             type="text"
-            placeholder="search here ..."
-          />
+            placeholder="search here ...(add Users)"
+          /><i className="fa-solid fa-user-plus icon" ></i>
         </div>
       </div>
       <div className="ls-list">
@@ -165,6 +173,7 @@ const LeftSideBar = () => {
             <img src={user.avatar} />
             <p>{user.name}</p>
           </div>
+          
         ) : (
           chatData?.map((item, index) => (
             <div

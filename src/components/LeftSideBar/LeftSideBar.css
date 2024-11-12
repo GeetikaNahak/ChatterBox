@@ -115,3 +115,13 @@
 /* .menu:hover .sub-menu{
     display: block;
 } */
+
+.icon{
+    /* background-color: rgb(0, 0, 0); */
+    border-radius: 50%;
+    height: 30px;
+    width: auto;
+    /* border: 1px solid #001030; */
+    padding: 7px;
+    aspect-ratio: 1/1;
+}
