@@ -80,6 +80,7 @@ const LeftSideBar = () => {
     } catch (error) {
       // console.log(error);
       toast.error("Error while Searching");
+      
     }
   };
 
@@ -124,6 +125,8 @@ const LeftSideBar = () => {
       });
       // console.log(chatData)
       // console.log(userData);
+      toast.info("User Added to Your Contacts")
+      setShowSearch(false)
       console.log(chatData)
     } catch (error) {}
   };
