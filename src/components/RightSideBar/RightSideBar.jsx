@@ -1,28 +1,51 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './RightSideBar.css'
 import assets from '../../assets/assets'
 import { logout } from '../../config/firebase'
+import { AppContext } from '../../context/AppContext'
 const RightSideBar = () => {
-  return (
+  const {chatUser,messages}=useContext(AppContext);
+  // console.log(chatUser)
+  const [msgImages,setMsgImages]=useState([]);
+  useEffect(()=>{
+    let tempVar=[];
+    messages.map((msg)=>{
+      if(msg.image){
+        tempVar.push(msg.image)
+      }
+    })
+    console.log(tempVar)
+    setMsgImages(tempVar)
+  })
+  //  console.log(tempVar)
+  return chatUser?(
     <div className='rs'>
       <div className="rs-profile">
-        <img src={assets.pic1} alt="" />
-        <h3>Richard Sanford <img src={assets.green_dot} className='dot' alt="" /></h3>
-        <p>Hey there! I am using ChatterBox</p>
+        <img src={chatUser.userData.avatar} alt="" />
+        <h3>{chatUser.userData.name} <img src={assets.green_dot} className='dot' alt="" /></h3>
+        <p>{chatUser.userData.bio}</p>
       </div>
       <hr />
       <div className="rs-media">
         <p>media</p>
         <div>
-          <img src={assets.pic1} alt="" />
-          <img src={assets.pic2} alt="" />
+
+          {msgImages.map((url,index)=>(<img key={index} src={url} alt="" />))}
+
+          {/* <img src={assets.pic1} alt="" />
+          
           <img src={assets.pic3} alt="" />
           <img src={assets.pic4} alt="" />
           <img src={assets.pic2} alt="" />
-          <img src={assets.pic1} alt="" />
+          <img src={assets.pic1} alt="" /> */}
         </div>
       </div>
       <button onClick={()=>{logout()}}>logout</button>
+    </div>
+  ):
+  (
+    <div className="rs">
+      <button onClick={()=>logout()}>Logout</button>
     </div>
   )
 }

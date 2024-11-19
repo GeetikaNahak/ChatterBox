@@ -1,5 +1,5 @@
 .chat-box{
-    height: 75vh;
+    height: 100vh;
     position: relative;
     background:linear-gradient(#ccccdd96,rgba(190, 194, 211, 0.419)),url('/src/assets/backchat.jpg')  no-repeat;
     background-size: cover;
@@ -61,7 +61,7 @@
 
 }
 .chat-msg{
-    height:450px;
+    height:85vh;
     padding-bottom: 50px;
     overflow-y: scroll;
     display: flex;
@@ -89,7 +89,7 @@
     background-color: #077fffe2;
     padding:8px;
     max-width: 200px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 300px;
     border-radius: 8px 8px 0px 8px;
     margin-bottom: 30px;
@@ -103,7 +103,7 @@
     font-size:9px;
 }
 .msg-img{
-    max-width: 230px;
+    max-width: 250px;
     margin-bottom: 30px;
     border-radius: 10px;
 }

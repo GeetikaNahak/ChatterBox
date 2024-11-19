@@ -1,7 +1,7 @@
 .ls{
     background:#001030;
     color: white;
-    height: 75vh;
+    height: 100vh;
 }
 
 .ls-top{
@@ -124,4 +124,10 @@
     /* border: 1px solid #001030; */
     padding: 7px;
     aspect-ratio: 1/1;
+}
+.friends.border img{
+    border: 2px solid rgb(0, 255, 179);
+}
+.friends.friends.border div span{
+    color: rgb(0, 255, 119);
 }

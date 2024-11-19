@@ -6,6 +6,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -136,7 +137,36 @@ const LeftSideBar = () => {
     // console.log(item);
     setChatUser(item);
     setMessagesId(item.messageId);
-    // console.log(chatData)
+    try {
+      // Reference to the current user's chats document
+      const userChatsRef = doc(db, "chats", userData.id);
+  
+      // Fetch the current user's chats data
+      const userChatSnapshot = await getDoc(userChatsRef);
+  
+      if (userChatSnapshot.exists()) {
+        const userChatsData = userChatSnapshot.data();
+  
+        // Find the index of the chat to update
+        const chatIndex = userChatsData.chatsData.findIndex(
+          (c) => c.messageId === item.messageId
+        );
+  
+        if (chatIndex !== -1) {
+          // Create a copy of the chatsData array with updated messageSeen property
+          const updatedChatsData = [...userChatsData.chatsData];
+          updatedChatsData[chatIndex].messageSeen = true;
+  
+          // Update the Firestore document with the modified chatsData array
+          await updateDoc(userChatsRef, {
+            chatsData: updatedChatsData,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error updating messageSeen status:", error);
+      toast.error("Error marking message as seen");
+    }
   };
 
   return (
@@ -185,7 +215,7 @@ const LeftSideBar = () => {
                 addChat;
               }}
               key={index}
-              className="friends"
+              className={`friends ${item.messageSeen || item.messageId===messagesId?"":"border"}`}
             >
               <img src={item.userData.avatar || assets.arrow_icon} alt="" />
               <div>

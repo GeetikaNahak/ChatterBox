@@ -102,7 +102,10 @@ const ChatBox = () => {
       <div className="chat-msg">
         {messages.map((msg,index)=>{
           return (<div key={index} className={msg.sId===userData.id?"s-msg":"r-msg"}>
-          <p className='msg'>{msg.text}</p>
+          {
+            msg['image']? <img className='msg-img' src={msg.image} alt="image"  />:<p className='msg'>{msg.text}</p>
+          }
+          
           <div>
             <img src={msg.sId===userData.id?userData.avatar:chatUser.userData.avatar} alt="" />
             <p>{new Date(msg.createdAt.seconds*1000).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</p>
