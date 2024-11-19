@@ -22,7 +22,7 @@ const RightSideBar = () => {
     <div className='rs'>
       <div className="rs-profile">
         <img src={chatUser.userData.avatar} alt="" />
-        <h3>{chatUser.userData.name} <img src={assets.green_dot} className='dot' alt="" /></h3>
+        <h3>{Date.now()-chatUser.userData.lastSeen<=70000?<img src={assets.green_dot} className='dot' alt="" />:null}{chatUser.userData.name}</h3>
         <p>{chatUser.userData.bio}</p>
       </div>
       <hr />
@@ -30,14 +30,9 @@ const RightSideBar = () => {
         <p>media</p>
         <div>
 
-          {msgImages.map((url,index)=>(<img key={index} src={url} alt="" />))}
+          {msgImages.map((url,index)=>(<img key={index} src={url} alt="" onClick={()=>window.open(url)}/>))}
 
-          {/* <img src={assets.pic1} alt="" />
           
-          <img src={assets.pic3} alt="" />
-          <img src={assets.pic4} alt="" />
-          <img src={assets.pic2} alt="" />
-          <img src={assets.pic1} alt="" /> */}
         </div>
       </div>
       <button onClick={()=>{logout()}}>logout</button>
